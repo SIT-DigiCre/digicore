@@ -1,3 +1,4 @@
+import NavBar from "@/components/common/NavBar";
 import "./globals.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
@@ -5,9 +6,9 @@ import { Inter } from "next/font/google";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: 'デジコア',
-  description: '芝浦工業大学デジクリのグループウェア',
-}
+  title: "デジコア",
+  description: "芝浦工業大学デジクリのグループウェア",
+};
 
 export default function RootLayout({
   children,
@@ -15,7 +16,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="ja">
+    <html lang="ja" className="dark">
+      <NavBar />
       <body className={inter.className}>{children}</body>
     </html>
   );
