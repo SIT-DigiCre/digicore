@@ -35,7 +35,7 @@ ls:
 
 .PHONY: dev-migrate
 dev-migrate:
-	${COMPOSE_IMPL} exec app yarn dev-migrate
+	${COMPOSE_IMPL} exec -u $(shell id -u):$(shell id -g) app yarn dev-migrate
 
 .PHONY: migrate
 migrate:
