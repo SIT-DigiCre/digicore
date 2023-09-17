@@ -35,7 +35,8 @@ ls:
 
 .PHONY: dev-migrate
 dev-migrate:
-	${COMPOSE_IMPL} exec app yarn dev-migrate
+	${COMPOSE_IMPL} exec app yarn dev-migrate 
+	${COMPOSE_IMPL} exec app chown -R 1000:1000 prisma/migrations
 
 .PHONY: migrate
 migrate:
