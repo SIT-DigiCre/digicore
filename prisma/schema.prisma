@@ -1,0 +1,231 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DB_URL")
+}
+
+model User {
+  id            String       @id @db.VarChar(36)
+  studentNumber String       @db.VarChar(8)
+  UserProfile   UserProfile? @relation
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+
+  userPrivateProfile     UserPrivateProfile?      @relation
+  userFile               UserFile[]               @relation
+  userPayment            UserPayment[]            @relation
+  workToUser             WorkToUser[]             @relation
+  EventReservationToUser EventReservationToUser[] @relation
+  GroupToUser            GroupToUser[]            @relation
+}
+
+model UserProfile {
+  id                String   @id @db.VarChar(36)
+  userId            String   @unique @db.VarChar(36)
+  schoolGrade       Int
+  iconURL           String
+  discordUserID     String
+  activeLimit       DateTime @db.Date
+  shortIntroduction String
+  introduction      String   @db.Text
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id])
+}
+
+model UserPrivateProfile {
+  id                String   @id @db.VarChar(36)
+  userId            String   @unique @db.VarChar(36)
+  schoolGrade       Int
+  iconURL           String
+  discordUserID     String
+  activeLimit       DateTime @db.Date
+  shortIntroduction String
+  introduction      String   @db.Text
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id])
+}
+
+model UserFile {
+  id        String   @id @db.VarChar(36)
+  userId    String   @db.VarChar(36)
+  name      String
+  kSize     Int
+  md5Hash   String
+  extension String
+  isPublic  Boolean
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user           User             @relation(fields: [userId], references: [id])
+  WorkToUserFile WorkToUserFile[]
+}
+
+model UserPayment {
+  id           String   @id @db.VarChar(36)
+  userId       String   @db.VarChar(36)
+  year         Int
+  transferName String
+  checked      Boolean
+  note         String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id])
+}
+
+model Work {
+  id          String   @id @db.VarChar(36)
+  name        String
+  description String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  workToUser     WorkToUser[]     @relation
+  workToUserFile WorkToUserFile[] @relation
+  workToWorkTag  WorkToWorkTag[]  @relation
+}
+
+model WorkTag {
+  id          String   @id @db.VarChar(36)
+  name        String   @unique
+  description String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  workToWorkTag WorkToWorkTag[] @relation
+}
+
+model WorkToUser {
+  workId    String
+  userId    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  work Work @relation(fields: [workId], references: [id])
+  user User @relation(fields: [userId], references: [id])
+
+  @@id([workId, userId])
+}
+
+model WorkToUserFile {
+  workId     String
+  userFileId String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  work     Work     @relation(fields: [workId], references: [id])
+  userFile UserFile @relation(fields: [userFileId], references: [id])
+
+  @@id([workId, userFileId])
+}
+
+model WorkToWorkTag {
+  workId    String
+  workTagId String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  work    Work    @relation(fields: [workId], references: [id])
+  workTag WorkTag @relation(fields: [workTagId], references: [id])
+
+  @@id([workId, workTagId])
+}
+
+model Event {
+  id           String   @id @db.VarChar(36)
+  name         String
+  calendarView Boolean
+  description  String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  eventReservation EventReservation[] @relation
+}
+
+model EventReservation {
+  id               String   @id @db.VarChar(36)
+  eventId          String   @db.VarChar(36)
+  name             String
+  description      String
+  start            DateTime
+  end              DateTime
+  reservationStart DateTime
+  reservationEnd   DateTime
+  capacity         Int
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  event                  Event                    @relation(fields: [eventId], references: [id])
+  EventReservationToUser EventReservationToUser[]
+}
+
+model EventReservationToUser {
+  eventReservationId String
+  userId             String
+  comment            String
+  url                String
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+
+  eventReservation EventReservation @relation(fields: [eventReservationId], references: [id])
+  user             User             @relation(fields: [userId], references: [id])
+
+  @@id([eventReservationId, userId])
+}
+
+model Group {
+  id          String  @id @db.VarChar(36)
+  name        String
+  description String
+  joinable    Boolean
+
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  GroupClaim  GroupClaim[]  @relation
+  GroupToUser GroupToUser[] @relation
+}
+
+model GroupClaim {
+  id        String   @id @db.VarChar(36)
+  groupId   String
+  claim     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  group Group @relation(fields: [groupId], references: [id])
+
+  @@unique([groupId, claim])
+}
+
+model GroupToUser {
+  groupId   String
+  userId    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  group Group @relation(fields: [groupId], references: [id])
+  user  User  @relation(fields: [userId], references: [id])
+
+  @@id([groupId, userId])
+}
+
+model MattermostRemindPost {
+  id          String   @id @db.VarChar(36)
+  userName    String
+  channelName String
+  body        String
+  postDate    DateTime
+  posted      Boolean
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
