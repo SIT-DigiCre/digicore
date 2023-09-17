@@ -1,34 +1,106 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# デジコア
 
-## Getting Started
+芝浦工業大学デジクリのグループウェアです
 
-First, run the development server:
+現在の開発中のバージョンは`π`です
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
+## 採用技術
+
+技術名|説明|バージョン
+:-:|:-:|:-:
+Next.js|ReactベースWebアプリフレームワーク|13
+Prisma|TSと相性の良いORM|5.2
+TypeScript|JSに静的型付けとクラスベースオブジェクト指向を加えた物|5.2.2
+TailwindCSS|拡張性の高いOSSなCSSフレームワーク|3.3.3
+flowbite|TailwindCSS向けのUIライブラリ|1.8
+
+## 開発環境セットアップ
+
+### 1. 以下のソフトウェアを用意する
+- docker
+- make
+（Windows環境であればWSL上に構築することを推奨）
+
+### 2. .envファイルの用意
+
+`.env.sample`の内容をコピーして`.env`ファイルを作成する
+
+### 3. コンテナのビルド
+
+```
+make build
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 4. DBのマイグレーション
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```
+make up-d
+make migrate-dev
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+### 5. 停止と実行
 
-## Learn More
+```
+make down //コンテナの停止
+make up //コンテナの起動
+make up-d //バックグラウンドでコンテナ起動
+```
 
-To learn more about Next.js, take a look at the following resources:
+## 開発の仕方
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### 1. ブランチを生やす
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+ブランチは以下の命名規則を守ってください
 
-## Deploy on Vercel
+- 新機能の開発の場合 => `feature/(機能の名前)`
+- => `enhance/(機能の名前)`
+- バグなどの修正の場合 => `fix/(機能の名前)`
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+機能の名前は`blog-post`のような命名でお願いします。
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+例）  
+ブログの投稿機能を作る場合  
+`feature/blog-post`
+
+### 2. DraftPR の作成
+
+少しでも作業が進み、コミットができたら、リモートにプッシュしてドラフトプルリクエストを作成します。
+
+概要の部分には作業した項目やこれから作業することを ToDo 形式で記入します。
+![pr概要](./doc/pic/pr-gaiyo.png)
+ブログ投稿機能作成の例
+
+```markdown
+- [ ] ブログ投稿作成ページの作成
+- [ ] ブログ投稿閲覧ページの作成
+- [ ] ブログ一覧閲覧ページの作成
+```
+
+書けたら**Draft pull request**で作成します。
+![draft-pr](./doc/pic/pr-draft.png)
+
+### 3. がんばって作る
+
+頑張って作ります。
+コミットは作業している内容が分かりやすいようにこまめに行いましょう。
+
+### 4. PR の整備とレビューの準備
+
+PR で行っている ToDo が完了して master に Merge する準備ができたら、レビューを受けるためにプルリクエストの内容をよりよくしていきます。
+再度、概要で定義した ToDo をやっているかはもちろん確認してください。  
+その他、新しい機能の場合はどんな感じかがわかるスクリーンショットをはったり、修正した場合は前と後でスクショがあるとわかりやすいです。
+
+また、破壊的変更がないかや最後のチェック項目も確認しましょう。
+
+ここまでできたらレビュワーを指定します。
+GitHub の`Reviewers`の歯車ボタンをクリックしてレビュ依頼をする人を選択します。
+![レビュワー指定](./doc/pic/pr-reviewer.png)
+
+### 5. Mattermost で報告
+
+GitHub の通知だけでは気づきにくいので、Mattermost の`~system-development`チャンネルにてメンション付きでレビュー依頼を PR の URL 付きで送りましょう。
+
+### 6. Approve されたら
+
+Approve されたら PR 内の Merge ボタンを押し、Merge を実行します。Merge されたら Delete branch ボタンで対象のブランチを削除しましょう。
+これで一連の作業は終わりです。
