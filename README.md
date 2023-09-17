@@ -67,7 +67,7 @@ make up-d //バックグラウンドでコンテナ起動
 少しでも作業が進み、コミットができたら、リモートにプッシュしてドラフトプルリクエストを作成します。
 
 概要の部分には作業した項目やこれから作業することを ToDo 形式で記入します。
-![pr概要](./doc/pic/pr-gaiyo.png)
+![pr概要](./doc/image/pr-gaiyo.png)
 ブログ投稿機能作成の例
 
 ```markdown
@@ -77,7 +77,7 @@ make up-d //バックグラウンドでコンテナ起動
 ```
 
 書けたら**Draft pull request**で作成します。
-![draft-pr](./doc/pic/pr-draft.png)
+![draft-pr](./doc/image/pr-draft.png)
 
 ### 3. がんばって作る
 
@@ -94,7 +94,7 @@ PR で行っている ToDo が完了して master に Merge する準備がで�
 
 ここまでできたらレビュワーを指定します。
 GitHub の`Reviewers`の歯車ボタンをクリックしてレビュ依頼をする人を選択します。
-![レビュワー指定](./doc/pic/pr-reviewer.png)
+![レビュワー指定](./doc/image/pr-reviewer.png)
 
 ### 5. Mattermost で報告
 
