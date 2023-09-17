@@ -14,7 +14,6 @@ const apps = [
 ];
 export const NavBarAppLinks = () => {
   const pathname = usePathname();
-  console.log(pathname);
   return (
     <>
       {apps.map((a) => (
