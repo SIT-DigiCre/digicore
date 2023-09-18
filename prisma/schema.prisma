@@ -11,12 +11,12 @@ datasource db {
 }
 
 model User {
-  id            String       @id @db.VarChar(36)
-  studentNumber String       @db.VarChar(8)
-  UserProfile   UserProfile? @relation
-  createdAt     DateTime     @default(now())
-  updatedAt     DateTime     @updatedAt
+  id            String   @id @db.VarChar(36)
+  studentNumber String   @db.VarChar(8)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 
+  UserProfile            UserProfile?             @relation
   userPrivateProfile     UserPrivateProfile?      @relation
   userFile               UserFile[]               @relation
   userPayment            UserPayment[]            @relation
