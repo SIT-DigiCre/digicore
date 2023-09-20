@@ -12,6 +12,7 @@ CREATE TABLE `User` (
 CREATE TABLE `UserProfile` (
     `id` VARCHAR(36) NOT NULL,
     `userId` VARCHAR(36) NOT NULL,
+    `name` VARCHAR(191) NOT NULL,
     `schoolGrade` INTEGER NOT NULL,
     `iconURL` VARCHAR(191) NOT NULL,
     `discordUserID` VARCHAR(191) NOT NULL,

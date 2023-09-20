@@ -20,6 +20,7 @@ logs:
 .PHONY: down
 down:
 	${COMPOSE_IMPL} down
+	docker volume rm digicore_app_node_modules
 
 .PHONY: pull
 pull:
