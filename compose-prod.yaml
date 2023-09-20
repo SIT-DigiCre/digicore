@@ -3,8 +3,14 @@ services:
     build:
       target: "prod"
     volumes:
-      - "./:/app"
-      - "app_node_modules:/app/node_modules"
+    networks:
+      - https_network
+      - digicore
+    restart: always
+
+  prisma_studio:
+    build:
+      target: "prod-prisma"
     ports:
       - "${PRISMA_PORT}:5555"
     networks:

@@ -20,7 +20,9 @@ logs:
 .PHONY: down
 down:
 	${COMPOSE_IMPL} down
+ifeq ($(COMPOSE_FILE),compose.yaml)
 	docker volume rm digicore_app_node_modules
+endif
 
 .PHONY: pull
 pull:
@@ -34,11 +36,13 @@ build:
 ls:
 	${COMPOSE_IMPL} ls
 
-.PHONY: dev-migrate
-dev-migrate:
-	${COMPOSE_IMPL} exec app yarn dev-migrate 
-	${COMPOSE_IMPL} exec app chown -R 1000:1000 prisma/migrations
-
 .PHONY: migrate
 migrate:
-	${COMPOSE_IMPL} exec app yarn migrate
+ifeq ($(COMPOSE_FILE),compose.yaml)
+	@echo dev migrate
+	${COMPOSE_IMPL} exec app yarn prisma migrate dev
+	${COMPOSE_IMPL} exec app chown -R 1000:1000 prisma/migrations
+else
+	@echo prod migrate
+	${COMPOSE_IMPL} exec app yarn prisma migrate deploy
+endif
