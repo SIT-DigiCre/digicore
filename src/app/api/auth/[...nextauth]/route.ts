@@ -10,7 +10,7 @@ const googleProviderOption: OAuthUserConfig<GoogleProfile> = {
 
 const prisma = new PrismaClient();
 
-const authOptions: NextAuthOptions = {
+export const authOptions: NextAuthOptions = {
   providers: [GoogleProvider(googleProviderOption)],
   secret: process.env.NEXTAUTH_URL || "secret",
   callbacks: {
@@ -25,13 +25,13 @@ const authOptions: NextAuthOptions = {
       if (session.user?.email) {
         const user = await prisma.user.findFirst({
           where: { studentNumber: session.user.email.split("@")[0] },
-          include: { UserProfile: true },
         });
         return {
           ...session,
           user: {
-            name: user?.UserProfile?.name,
-            icon: user?.UserProfile?.iconURL,
+            id: user?.id,
+            name: user?.name,
+            icon: user?.iconURL,
           },
         };
       }
