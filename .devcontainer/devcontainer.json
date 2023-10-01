@@ -1,8 +1,11 @@
 {
-  "name": "Existing Docker Compose (Extend)",
-  "dockerComposeFile": [
-    "../compose.yaml"
-  ],
+  "name": "digicore dev container",
+  "dockerComposeFile": ["../compose.yaml"],
   "workspaceFolder": "/app",
-  "service": "app"
+  "service": "app",
+  "customizations": {
+    "vscode": {
+      "extensions": ["esbenp.prettier-vscode", "Prisma.prisma"]
+    }
+  }
 }
